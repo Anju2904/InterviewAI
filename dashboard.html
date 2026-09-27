@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard - InterviewAI
+{% endblock %}
+
+{% block content %}
+
+<main class="dashboard-page">
+
+    <section class="dashboard-header">
+
+        <div>
+
+            <div class="badge">
+                YOUR DASHBOARD
+            </div>
+
+            <h1>
+                Welcome back,
+                {{ session["user_name"] }} 👋
+            </h1>
+
+            <p>
+                Track your interview preparation and
+                improve your technical skills.
+            </p>
+
+        </div>
+
+        <a href="/setup"
+           class="primary-button">
+
+            Start Interview →
+
+        </a>
+
+        <a href="{{ url_for('ats_matcher') }}"
+           class="primary-button">
+           📄 Resume ATS Matcher
+        </a>
+
+        
+
+    </section>
+
+
+    <section class="stats-grid">
+
+        <div class="stat-card">
+
+            <span>
+                Total Interviews
+            </span>
+
+            <strong>
+                {{ total_interviews }}
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Average Score
+            </span>
+
+            <strong>
+                {{ average_score }}%
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Best Score
+            </span>
+
+            <strong>
+                {{ best_score }}%
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Target
+            </span>
+
+            <strong>
+                90%
+            </strong>
+
+        </div>
+
+    </section>
+
+
+    <section class="dashboard-grid">
+
+        <div class="chart-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+                        Performance Overview
+                    </h2>
+
+                    <p>
+                        Your recent interview scores
+                    </p>
+
+                </div>
+
+            </div>
+
+            <canvas id="performanceChart"></canvas>
+
+        </div>
+
+
+        <div class="recent-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+                        Recent Interviews
+                    </h2>
+
+                    <p>
+                        Your latest attempts
+                    </p>
+
+                </div>
+
+                <a href="/history">
+                    View All
+                </a>
+
+            </div>
+
+
+            {% if interviews %}
+
+                {% for interview in interviews[:5] %}
+
+                <div class="recent-item">
+
+                    <div>
+
+                        <strong>
+                            {{ interview["role"] }}
+                        </strong>
+
+                        <span>
+                            {{ interview["difficulty"] }}
+                        </span>
+
+                    </div>
+
+                    <strong class="score">
+                        {{ interview["score"] }}%
+                    </strong>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <p>
+                        No interviews yet.
+                    </p>
+
+                    <a href="/setup">
+                        Start your first interview →
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const interviewData = [
+    {% for interview in interviews %}
+        {{ interview["score"] }}
+        {% if not loop.last %},{% endif %}
+    {% endfor %}
+];
+
+
+const interviewLabels = [
+    {% for interview in interviews %}
+        "{{ loop.index }}"
+        {% if not loop.last %},{% endif %}
+    {% endfor %}
+];
+
+
+renderPerformanceChart(
+    interviewLabels,
+    interviewData
+);
+
+</script>
+
+{% endblock %}

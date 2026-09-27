@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}
+Login - InterviewAI
+{% endblock %}
+
+{% block content %}
+
+<div class="auth-page">
+
+    <div class="auth-card">
+
+        <div class="auth-logo">
+            Interview<span>AI</span>
+        </div>
+
+        <h1>
+            Welcome Back
+        </h1>
+
+        <p>
+            Continue your interview preparation.
+        </p>
+
+
+        <form method="POST">
+
+            <label>
+                Email
+            </label>
+
+            <input
+                type="email"
+                name="email"
+                placeholder="you@example.com"
+                required
+            >
+
+
+            <label>
+                Password
+            </label>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+            >
+
+
+            <button class="full-button"
+                    type="submit">
+
+                Login
+
+            </button>
+
+        </form>
+
+
+        <p class="auth-footer">
+
+            Don't have an account?
+
+            <a href="/register">
+                Create account
+            </a>
+
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+
+{% block title %}
+Answer Evaluation - InterviewAI
+{% endblock %}
+
+
+{% block content %}
+
+<main class="feedback-page">
+
+
+    <section class="feedback-header">
+
+        <div class="badge">
+            AI ANSWER ANALYSIS
+        </div>
+
+        <h1>
+            Answer Evaluation
+        </h1>
+
+        <p>
+            Here's how your answer performed.
+        </p>
+
+    </section>
+
+
+    <!-- Question -->
+
+    <section class="feedback-card">
+
+        <h3>
+            Question
+        </h3>
+
+        <p>
+            {{ question }}
+        </p>
+
+    </section>
+
+
+    <!-- Score -->
+
+    <section class="main-score-card">
+
+        <div class="score-circle">
+
+            {{ evaluation.score }}
+
+            <span>/100</span>
+
+        </div>
+
+        <h2>
+            {{ evaluation.performance }}
+        </h2>
+
+    </section>
+
+
+    <!-- Detailed Scores -->
+
+    <section class="score-grid">
+
+
+        <div class="score-card">
+
+            <span>
+                Keyword Coverage
+            </span>
+
+            <strong>
+                {{ evaluation.keyword_score }}%
+            </strong>
+
+            <div class="progress">
+
+                <div
+                    class="progress-bar"
+                    style="width: {{ evaluation.keyword_score }}%;">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="score-card">
+
+            <span>
+                Relevance
+            </span>
+
+            <strong>
+                {{ evaluation.relevance_score }}%
+            </strong>
+
+            <div class="progress">
+
+                <div
+                    class="progress-bar"
+                    style="width: {{ evaluation.relevance_score }}%;">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="score-card">
+
+            <span>
+                Completeness
+            </span>
+
+            <strong>
+                {{ evaluation.completeness_score }}%
+            </strong>
+
+            <div class="progress">
+
+                <div
+                    class="progress-bar"
+                    style="width: {{ evaluation.completeness_score }}%;">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="score-card">
+
+            <span>
+                Answer Structure
+            </span>
+
+            <strong>
+                {{ evaluation.structure_score }}%
+            </strong>
+
+            <div class="progress">
+
+                <div
+                    class="progress-bar"
+                    style="width: {{ evaluation.structure_score }}%;">
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- Strengths -->
+
+    <section class="feedback-card">
+
+        <h2>
+            ✓ Strengths
+        </h2>
+
+
+        {% for strength in evaluation.strengths %}
+
+        <div class="feedback-item positive">
+
+            <span>✓</span>
+
+            <p>
+                {{ strength }}
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+
+    <!-- Improvements -->
+
+    <section class="feedback-card">
+
+        <h2>
+            ↗ Areas to Improve
+        </h2>
+
+
+        {% for improvement in evaluation.improvements %}
+
+        <div class="feedback-item improvement">
+
+            <span>!</span>
+
+            <p>
+                {{ improvement }}
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+
+    <!-- Keywords -->
+
+    <section class="feedback-card">
+
+        <h2>
+            Technical Concepts Detected
+        </h2>
+
+
+        <div class="keyword-list">
+
+            {% for keyword in evaluation.matched_keywords %}
+
+            <span class="keyword">
+
+                {{ keyword }}
+
+            </span>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <!-- Actions -->
+
+    <div class="feedback-actions">
+
+        <a
+            href="{{ url_for('interview') }}"
+            class="primary-button"
+        >
+
+            Back to Interview
+
+        </a>
+
+
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="secondary-button"
+        >
+
+            Dashboard
+
+        </a>
+
+    </div>
+
+
+</main>
+
+{% endblock %}

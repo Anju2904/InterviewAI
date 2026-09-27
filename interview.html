@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="interview-page">
+
+    <!-- Interview Header -->
+    <div class="interview-top">
+
+        <div>
+            <h1>AI Interview</h1>
+
+            <p>
+                {{ role }} • {{ difficulty }}
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- Question Progress -->
+    <div class="question-progress-bar">
+
+        <div
+            style="width: {{ (question_number / total_questions) * 100 }}%;"
+        ></div>
+
+    </div>
+
+
+    <!-- Question Screen -->
+    <div class="question-screen">
+
+        <!-- Question Meta -->
+        <div class="question-meta">
+
+            <span>
+                Question {{ question_number }}
+                of {{ total_questions }}
+            </span>
+
+            <span>
+                {{ difficulty }}
+            </span>
+
+        </div>
+
+
+        <!-- Generated Question -->
+        <h2>
+            {{ question.question }}
+        </h2>
+
+
+        <!-- Answer Form -->
+        <form
+            action="{{ url_for('evaluate_answer_route') }}"
+            method="POST"
+        >
+
+            <textarea
+                name="answer"
+                placeholder="Type your answer here..."
+                required
+            ></textarea>
+
+
+            <div class="question-actions">
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+
+                    {% if question_number == total_questions %}
+
+                        Finish Interview
+
+                    {% else %}
+
+                        Next Question
+
+                    {% endif %}
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

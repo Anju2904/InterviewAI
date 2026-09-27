@@ -1,0 +1,359 @@
+{% extends "base.html" %}
+
+{% block title %}
+Performance Analytics - InterviewAI
+{% endblock %}
+
+
+{% block content %}
+
+<main class="analytics-page">
+
+
+    <!-- HEADER -->
+
+    <section class="page-header">
+
+        <div class="badge">
+            PERFORMANCE ANALYTICS
+        </div>
+
+        <h1>
+            Your Interview Performance
+        </h1>
+
+        <p>
+            Analyze your progress and identify
+            areas for improvement.
+        </p>
+
+    </section>
+
+
+    <!-- STATISTICS -->
+
+    <section class="history-stats">
+
+
+        <div class="history-stat-card">
+
+            <span>
+                Total Interviews
+            </span>
+
+            <strong>
+                {{ total_interviews }}
+            </strong>
+
+        </div>
+
+
+        <div class="history-stat-card">
+
+            <span>
+                Average Score
+            </span>
+
+            <strong>
+                {{ average_score }}%
+            </strong>
+
+        </div>
+
+
+        <div class="history-stat-card">
+
+            <span>
+                Best Score
+            </span>
+
+            <strong>
+                {{ best_score }}%
+            </strong>
+
+        </div>
+
+
+        <div class="history-stat-card">
+
+            <span>
+                Target
+            </span>
+
+            <strong>
+                90%
+            </strong>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- PERFORMANCE LEVEL -->
+
+    <section class="analytics-score-card">
+
+        <div class="analytics-score">
+
+            {{ average_score }}%
+
+        </div>
+
+        <h2>
+            {{ performance_level }}
+        </h2>
+
+        <p>
+            Overall Interview Performance
+        </p>
+
+    </section>
+
+
+    <!-- SCORE TREND -->
+
+    <section class="analytics-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    Score Progress
+                </h2>
+
+                <p>
+                    Your interview scores over time
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="chart-container">
+
+            <canvas id="scoreTrendChart"></canvas>
+
+        </div>
+
+    </section>
+
+
+    <!-- ROLE PERFORMANCE -->
+
+    <section class="analytics-card">
+
+        <h2>
+            Performance by Role
+        </h2>
+
+        {% if role_performance %}
+
+            {% for role, score in role_performance.items() %}
+
+            <div class="performance-row">
+
+                <div class="performance-row-header">
+
+                    <strong>
+                        {{ role }}
+                    </strong>
+
+                    <span>
+                        {{ score }}%
+                    </span>
+
+                </div>
+
+
+                <div class="performance-bar">
+
+                    <div
+                        class="performance-fill"
+                        style="width: {{ score }}%;"
+                    ></div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>
+                Complete an interview to see
+                role performance.
+            </p>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- DIFFICULTY -->
+
+    <section class="analytics-card">
+
+        <h2>
+            Performance by Difficulty
+        </h2>
+
+        {% if difficulty_performance %}
+
+            {% for difficulty, score in difficulty_performance.items() %}
+
+            <div class="performance-row">
+
+                <div class="performance-row-header">
+
+                    <strong>
+                        {{ difficulty }}
+                    </strong>
+
+                    <span>
+                        {{ score }}%
+                    </span>
+
+                </div>
+
+
+                <div class="performance-bar">
+
+                    <div
+                        class="performance-fill"
+                        style="width: {{ score }}%;"
+                    ></div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>
+                Complete an interview to see
+                difficulty performance.
+            </p>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- IMPROVEMENT -->
+
+    <section class="analytics-card improvement-card">
+
+        <h2>
+            🎯 Improvement Recommendation
+        </h2>
+
+        <p>
+            {{ improvement_message }}
+        </p>
+
+    </section>
+
+
+    <!-- ACTIONS -->
+
+    <div class="history-actions">
+
+        <a
+            href="{{ url_for('history') }}"
+            class="secondary-button"
+        >
+
+            ← Interview History
+
+        </a>
+
+
+        <a
+            href="{{ url_for('setup') }}"
+            class="primary-button"
+        >
+
+            Start New Interview →
+
+        </a>
+
+    </div>
+
+
+</main>
+
+
+<!-- Chart.js -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+
+const scoreData = {{ score_trend | tojson }};
+
+const scoreLabels = scoreData.map(
+    (_, index) => "Interview " + (index + 1)
+);
+
+
+const ctx = document
+    .getElementById("scoreTrendChart");
+
+
+new Chart(ctx, {
+
+    type: "line",
+
+    data: {
+
+        labels: scoreLabels,
+
+        datasets: [
+
+            {
+
+                label: "Interview Score",
+
+                data: scoreData,
+
+                tension: 0.3,
+
+                fill: false
+
+            }
+
+        ]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        scales: {
+
+            y: {
+
+                beginAtZero: true,
+
+                max: 100
+
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+
+
+{% endblock %}

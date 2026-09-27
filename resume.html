@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block title %}
+Resume Analyzer - InterviewAI
+{% endblock %}
+
+
+{% block content %}
+
+<main class="resume-page">
+
+    <section class="resume-header">
+
+        <div class="badge">
+            RESUME INTELLIGENCE
+        </div>
+
+        <h1>
+            Analyze Your Resume
+        </h1>
+
+        <p>
+            Upload your resume and let InterviewAI
+            identify your technical skills and
+            personalize your interview.
+        </p>
+
+    </section>
+
+
+    <section class="resume-upload-card">
+
+        <div class="upload-icon">
+            📄
+        </div>
+
+        <h2>
+            Upload Your Resume
+        </h2>
+
+        <p>
+            Upload your resume in PDF format.
+        </p>
+
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            <label class="file-upload">
+
+                <input
+                    type="file"
+                    name="resume"
+                    accept=".pdf"
+                    required
+                >
+
+                <span>
+                    Choose PDF Resume
+                </span>
+
+            </label>
+
+
+            <button
+                type="submit"
+                class="primary-button">
+
+                Analyze Resume →
+
+            </button>
+
+        </form>
+
+    </section>
+
+
+    {% if analysis %}
+
+    <section class="analysis-section">
+
+        <div class="analysis-header">
+
+            <div>
+
+                <div class="badge">
+                    ANALYSIS COMPLETE
+                </div>
+
+                <h2>
+                    Resume Skill Profile
+                </h2>
+
+            </div>
+
+            <div class="resume-score">
+
+                {{ analysis.skill_score }}%
+
+                <small>
+                    Skill Coverage
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="resume-stats">
+
+            <div class="resume-stat">
+
+                <strong>
+                    {{ analysis.word_count }}
+                </strong>
+
+                <span>
+                    Words
+                </span>
+
+            </div>
+
+
+            <div class="resume-stat">
+
+                <strong>
+                    {{ analysis.skills|length }}
+                </strong>
+
+                <span>
+                    Skills Detected
+                </span>
+
+            </div>
+
+
+            <div class="resume-stat">
+
+                <strong>
+                    PDF
+                </strong>
+
+                <span>
+                    Format
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="skills-section">
+
+            <h3>
+                Detected Technical Skills
+            </h3>
+
+
+            {% if analysis.skills %}
+
+                <div class="skill-list">
+
+                    {% for skill in analysis.skills %}
+
+                    <span class="skill-tag">
+
+                        ✓ {{ skill }}
+
+                    </span>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <p>
+                    No recognized technical skills
+                    were detected.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="personalized-card">
+
+            <div>
+
+                <span class="feature-icon">
+                    🧠
+                </span>
+
+                <h3>
+                    Your Interview Is Ready
+                </h3>
+
+                <p>
+                    InterviewAI will generate questions
+                    based on the skills detected in your
+                    resume.
+                </p>
+
+            </div>
+
+
+            <a
+                href="/resume-interview"
+                class="primary-button">
+
+                Start Personalized Interview →
+
+            </a>
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+</main>
+
+{% endblock %}

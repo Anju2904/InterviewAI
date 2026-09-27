@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+
+{% block title %}
+Interview Result - InterviewAI
+{% endblock %}
+
+{% block content %}
+
+<main class="result-page">
+
+    <!-- ============================= -->
+    <!-- RESULT HERO -->
+    <!-- ============================= -->
+
+    <section class="result-hero">
+
+        <div class="badge">
+            INTERVIEW COMPLETED
+        </div>
+
+        <h1>
+            Your Performance Report
+        </h1>
+
+        <p>
+            {{ role }} · {{ difficulty }}
+        </p>
+
+
+        <div class="result-score">
+
+            {{ score }}%
+
+        </div>
+
+
+        <h2>
+
+            {% if score >= 90 %}
+
+                Excellent Performance! 🎉
+
+            {% elif score >= 80 %}
+
+                Great Performance! 👏
+
+            {% elif score >= 70 %}
+
+                Good Attempt! 👍
+
+            {% elif score >= 50 %}
+
+                Keep Practicing! 💪
+
+            {% else %}
+
+                More Practice Needed 📚
+
+            {% endif %}
+
+        </h2>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- OVERALL FEEDBACK -->
+    <!-- ============================= -->
+
+    <section class="feedback-card">
+
+        <div class="badge">
+            OVERALL PERFORMANCE
+        </div>
+
+        <h2>
+            Interview Feedback
+        </h2>
+
+        <p>
+            {{ feedback }}
+        </p>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- QUESTION ANALYSIS -->
+    <!-- ============================= -->
+
+    <section class="answer-analysis">
+
+        <h2>
+            Detailed Question Analysis
+        </h2>
+
+
+        {% for item in results %}
+
+        <div class="answer-card">
+
+
+            <!-- Question Number + Score -->
+
+            <div class="answer-header">
+
+                <span>
+
+                    Question {{ loop.index }}
+
+                </span>
+
+
+                <strong>
+
+                    {{ item.score }}%
+
+                </strong>
+
+            </div>
+
+
+            <!-- Question -->
+
+            <h3>
+
+                {{ item.question }}
+
+            </h3>
+
+
+            <!-- User Answer -->
+
+            <div class="your-answer">
+
+                <strong>
+
+                    Your Answer
+
+                </strong>
+
+
+                <p>
+
+                    {% if item.answer %}
+
+                        {{ item.answer }}
+
+                    {% else %}
+
+                        No answer provided.
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+
+            <!-- ============================= -->
+            <!-- AI STRENGTHS -->
+            <!-- ============================= -->
+
+            {% if item.strengths %}
+
+            <div class="ai-feedback-section strengths-section">
+
+                <h4>
+
+                    ✅ Strengths
+
+                </h4>
+
+
+                <ul>
+
+                    {% for strength in item.strengths %}
+
+                    <li>
+
+                        {{ strength }}
+
+                    </li>
+
+                    {% endfor %}
+
+                </ul>
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- ============================= -->
+            <!-- AI WEAKNESSES -->
+            <!-- ============================= -->
+
+            {% if item.weaknesses %}
+
+            <div class="ai-feedback-section weaknesses-section">
+
+                <h4>
+
+                    ⚠️ Areas to Improve
+
+                </h4>
+
+
+                <ul>
+
+                    {% for weakness in item.weaknesses %}
+
+                    <li>
+
+                        {{ weakness }}
+
+                    </li>
+
+                    {% endfor %}
+
+                </ul>
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- ============================= -->
+            <!-- AI FEEDBACK -->
+            <!-- ============================= -->
+
+            {% if item.feedback %}
+
+            <div class="ai-feedback-section final-feedback">
+
+                <h4>
+
+                    🤖 AI Feedback
+
+                </h4>
+
+
+                <p>
+
+                    {{ item.feedback }}
+
+                </p>
+
+            </div>
+
+            {% endif %}
+
+
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- ACTION BUTTONS -->
+    <!-- ============================= -->
+
+    <div class="result-actions">
+
+        <a
+            href="/setup"
+            class="primary-button"
+        >
+
+            Take Another Interview →
+
+        </a>
+
+
+        <a
+            href="/dashboard"
+            class="secondary-button"
+        >
+
+            View Dashboard
+
+        </a>
+
+    </div>
+
+</main>
+
+{% endblock %}

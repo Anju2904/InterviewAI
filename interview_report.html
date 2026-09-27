@@ -1,0 +1,360 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Interview Report - InterviewAI
+{% endblock %}
+
+
+{% block content %}
+
+
+<main class="report-page">
+
+
+    <!-- HEADER -->
+
+    <section class="page-heading">
+
+        <div class="badge">
+            INTERVIEW REPORT
+        </div>
+
+        <h1>
+            Interview Performance Report
+        </h1>
+
+        <p>
+            Detailed analysis of your interview answers.
+        </p>
+
+    </section>
+
+
+    <!-- INTERVIEW INFORMATION -->
+
+    <section class="report-info-card">
+
+        <div>
+
+            <span>
+                Role
+            </span>
+
+            <strong>
+                {{ interview["role"] }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Difficulty
+            </span>
+
+            <strong>
+                {{ interview["difficulty"] }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Interview Type
+            </span>
+
+            <strong>
+                {{ interview["interview_type"] }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Final Score
+            </span>
+
+            <strong class="report-score">
+                {{ interview["score"] }}%
+            </strong>
+
+        </div>
+
+    </section>
+
+
+    <!-- STATISTICS -->
+
+    <section class="history-stats">
+
+
+        <div class="history-stat-card">
+
+            <span>
+                Questions Answered
+            </span>
+
+            <strong>
+                {{ total_answers }}
+            </strong>
+
+        </div>
+
+
+        <div class="history-stat-card">
+
+            <span>
+                Average Answer Score
+            </span>
+
+            <strong>
+                {{ average_answer_score }}%
+            </strong>
+
+        </div>
+
+
+        <div class="history-stat-card">
+
+            <span>
+                Best Answer
+            </span>
+
+            <strong>
+                {{ highest_answer_score }}%
+            </strong>
+
+        </div>
+
+
+        <div class="history-stat-card">
+
+            <span>
+                Lowest Answer
+            </span>
+
+            <strong>
+                {{ lowest_answer_score }}%
+            </strong>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- PERFORMANCE SUMMARY -->
+
+    <section class="report-summary">
+
+        <h2>
+            🎯 Performance Summary
+        </h2>
+
+        <p>
+            {{ performance_message }}
+        </p>
+
+    </section>
+
+
+    <!-- ANSWER ANALYSIS -->
+
+    <section class="answer-analysis">
+
+        <div class="section-title">
+
+            <h2>
+                Question-by-Question Analysis
+            </h2>
+
+            <p>
+                Review each answer and identify
+                areas for improvement.
+            </p>
+
+        </div>
+
+
+        {% for answer in answers %}
+
+
+        <article class="answer-card">
+
+
+            <!-- QUESTION -->
+
+            <div class="question-number">
+
+                Question {{ loop.index }}
+
+            </div>
+
+
+            <h3>
+                {{ answer["question"] }}
+            </h3>
+
+
+            <!-- ANSWER -->
+
+            <div class="answer-box">
+
+                <span>
+                    Your Answer
+                </span>
+
+                {% if answer["answer"] %}
+
+                    <p>
+                        {{ answer["answer"] }}
+                    </p>
+
+                {% else %}
+
+                    <p class="no-answer">
+                        No answer provided.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- SCORE -->
+
+            <div class="answer-score-row">
+
+                <span>
+                    Answer Score
+                </span>
+
+                <strong>
+
+                    {{ answer["score"] }}%
+
+                </strong>
+
+            </div>
+
+
+            <!-- PROGRESS -->
+
+            <div class="answer-progress">
+
+                <div
+                    class="answer-progress-fill"
+                    style="width: {{ answer['score'] }}%;"
+                ></div>
+
+            </div>
+
+
+            <!-- FEEDBACK -->
+
+            {% set answer_score =
+                answer["score"]|float
+            %}
+
+
+            {% if answer_score >= 80 %}
+
+                <div class="answer-feedback excellent">
+
+                    <strong>
+                        ✓ Strong Answer
+                    </strong>
+
+                    <p>
+                        Good understanding of the
+                        concept. Continue practicing
+                        clear and concise explanations.
+                    </p>
+
+                </div>
+
+
+            {% elif answer_score >= 60 %}
+
+                <div class="answer-feedback average">
+
+                    <strong>
+                        ⚠ Needs Improvement
+                    </strong>
+
+                    <p>
+                        Your answer shows some
+                        understanding. Try adding
+                        more technical details and
+                        examples.
+                    </p>
+
+                </div>
+
+
+            {% else %}
+
+                <div class="answer-feedback weak">
+
+                    <strong>
+                        ✗ Needs More Practice
+                    </strong>
+
+                    <p>
+                        Review this concept and
+                        practice explaining it
+                        using practical examples.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+
+        </article>
+
+
+        {% endfor %}
+
+
+    </section>
+
+
+    <!-- ACTIONS -->
+
+    <div class="report-actions">
+
+
+        <a
+            href="{{ url_for('history') }}"
+            class="secondary-button"
+        >
+
+            ← Interview History
+
+        </a>
+
+
+        <a
+            href="{{ url_for('setup') }}"
+            class="primary-button"
+        >
+
+            Start New Interview →
+
+        </a>
+
+
+    </div>
+
+
+</main>
+
+
+{% endblock %}

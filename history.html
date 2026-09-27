@@ -1,0 +1,356 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Interview History - InterviewAI
+{% endblock %}
+
+
+{% block content %}
+
+
+<main class="history-page">
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-heading">
+
+        <div class="badge">
+            YOUR HISTORY
+        </div>
+
+        <h1>
+            Interview History
+        </h1>
+
+        <p>
+            Review your previous interview attempts
+            and track your improvement.
+        </p>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <section class="history-stats">
+
+
+        <div class="history-stat-card">
+
+            <span>
+                Total Interviews
+            </span>
+
+            <strong>
+                {{ total_interviews }}
+            </strong>
+
+        </div>
+
+
+        <div class="history-stat-card">
+
+            <span>
+                Average Score
+            </span>
+
+            <strong>
+                {{ average_score }}%
+            </strong>
+
+        </div>
+
+
+        <div class="history-stat-card">
+
+            <span>
+                Best Score
+            </span>
+
+            <strong>
+                {{ best_score }}%
+            </strong>
+
+        </div>
+
+
+        <div class="history-stat-card">
+
+            <span>
+                Target
+            </span>
+
+            <strong>
+                90%
+            </strong>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- INTERVIEW HISTORY -->
+
+    {% if interviews %}
+
+
+    <section class="history-card">
+
+
+        <div class="history-card-header">
+
+            <div>
+
+                <h2>
+                    Previous Interviews
+                </h2>
+
+                <p>
+                    Your latest interview attempts
+                </p>
+
+            </div>
+
+
+            <a
+                href="{{ url_for('analytics') }}"
+                class="secondary-button"
+            >
+
+                📊 Analytics
+
+            </a>
+
+        </div>
+
+
+        <div class="history-table-wrapper">
+
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Role
+                        </th>
+
+                        <th>
+                            Difficulty
+                        </th>
+
+                        <th>
+                            Type
+                        </th>
+
+                        <th>
+                            Score
+                        </th>
+
+                        <th>
+                            Date
+                        </th>
+
+                        <th>
+                            Report
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for interview in interviews %}
+
+
+                    <tr>
+
+
+                        <td>
+
+                            <strong>
+                                {{ interview["role"] }}
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+
+                            {{ interview["difficulty"] }}
+
+                        </td>
+
+
+                        <td>
+
+                            {{ interview["interview_type"] }}
+
+                        </td>
+
+
+                        <td>
+
+                            {% set score =
+                                interview["score"]|float
+                            %}
+
+
+                            {% if score >= 80 %}
+
+                                <span class="table-score score-excellent">
+
+                                    {{ interview["score"] }}%
+
+                                </span>
+
+                            {% elif score >= 60 %}
+
+                                <span class="table-score score-good">
+
+                                    {{ interview["score"] }}%
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="table-score score-low">
+
+                                    {{ interview["score"] }}%
+
+                                </span>
+
+                            {% endif %}
+
+
+                        </td>
+
+
+                        <td>
+
+                            {{ interview["completed_at"] }}
+
+                        </td>
+
+                        <td>
+
+                            <a
+                                href="{{ url_for(
+                                    'interview_report',
+                                    interview_id=interview['id']
+                                ) }}"
+                                class="report-button"
+                            >
+                        
+                                View Report →
+                        
+                            </a>
+                        
+                        </td>
+
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </section>
+
+
+    {% else %}
+
+
+    <!-- EMPTY STATE -->
+
+
+    <div class="empty-large">
+
+
+        <div class="empty-icon">
+            📊
+        </div>
+
+
+        <h2>
+            No interviews yet
+        </h2>
+
+
+        <p>
+            Complete your first mock interview
+            to see your progress here.
+        </p>
+
+
+        <a
+            href="{{ url_for('setup') }}"
+            class="primary-button"
+        >
+
+            Start Interview →
+
+        </a>
+
+
+    </div>
+
+
+    {% endif %}
+
+
+    <!-- ACTIONS -->
+
+
+    {% if interviews %}
+
+    <div class="history-actions">
+
+
+        <a
+            href="{{ url_for('setup') }}"
+            class="primary-button"
+        >
+
+            + New Interview
+
+        </a>
+
+
+        <a
+            href="{{ url_for('analytics') }}"
+            class="secondary-button"
+        >
+
+            📈 View Performance Analytics
+
+        </a>
+
+
+    </div>
+
+    {% endif %}
+
+
+</main>
+
+
+{% endblock %}

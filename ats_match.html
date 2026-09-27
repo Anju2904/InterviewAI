@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}
+ATS Resume Matcher - InterviewAI
+{% endblock %}
+
+
+{% block content %}
+
+<main class="ats-page">
+
+    <section class="ats-header">
+
+        <div class="badge">
+            ATS RESUME ANALYZER
+        </div>
+
+        <h1>
+            Resume ↔ Job Match
+        </h1>
+
+        <p>
+            Compare your resume with a job description
+            and identify your skill gaps.
+        </p>
+
+    </section>
+
+
+    <section class="ats-form-card">
+
+        <form
+            method="POST"
+            action="{{ url_for('analyze_ats') }}"
+        >
+
+            <label>
+                Job Description
+            </label>
+
+            <textarea
+                name="job_description"
+                rows="16"
+                placeholder="Paste the complete job description here..."
+                required
+            ></textarea>
+
+
+            <button
+                type="submit"
+                class="primary-button"
+            >
+
+                Analyze Resume →
+
+            </button>
+
+        </form>
+
+    </section>
+
+</main>
+
+{% endblock %}
